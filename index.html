@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Appliance Energy Use in Australia</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html"><img src="picture/PowerIcon.png" alt="Power Logo" class="logo" title="Go to Home Page"></a>
+    <a href="index.html" class="nav-link active">Home</a>
+    <a href="television.html" class="nav-link">Televisions</a>
+    <a href="about.html" class="nav-link">About Us</a>
+  </nav>
+
+  <main>
+    <header>
+      <h1>Appliance Energy Consumption</h1>
+      <div id="content"></div>
+      <!-- Give the SVG a size so shapes can be seen -->
+       <svg width="300" height="150"></svg>
+       <!-- Load D3 first, then your D3 code file -->
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="energy-d3.js"></script>
+    </header>
+    
+    <div class="box">
+      <h2>Quick facts</h2>
+      <ul>
+        <li>Energy labels (star ratings) help compare appliance efficiency at a glance.</li>
+        <li>Standby power can add unexpected costs—turn devices fully off when not in use.</li>
+        <li>Choosing higher-efficiency models usually pays back through lower electricity bills.</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 Your Name | Built with assistance from GenAI for starter code/content
+  </footer>
+</body>
+</html>
