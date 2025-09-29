@@ -8,7 +8,7 @@ return {
     count: +d.count // '+' converts string to number
 };
 }).then(data => {
-    data.sort((a, b) => d3.descending(a.count, b.count));
+    data.sort((a, b) => d3.descending(a.count, b.count)); // Sort descending by count
     console.log(data); // array of typed objects
-    createBarChart(data);
+    createBarChart(data); //call chart function from t04-5-bars.js
     });
