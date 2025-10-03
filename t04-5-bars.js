@@ -1,61 +1,41 @@
 const createBarChart = (data) => {
-  // --- Sizes (logical vs. display) ---
-  const viewW = 500;                                 // logical width (forces x-scaling)
+  //Setup the bar Sizes with its logical and display sizes
+  const viewW = 500;                                 // logical width (forces x-scaling) //for the bar chart
   const viewH = Math.max(220, data.length * 28);     // logical height based on rows
-  const displayW = 640;                               // rendered width on page
+  const displayW = 1000;                               // rendered width on page //for the background conatiner
   const displayH = Math.min(480, data.length * 24 + 40); // rendered height cap
 
   // --- SVG root ---
   const svg = d3.select(".responsive-svg-container")
-    .append("svg")
-      .attr("viewBox", `0 0 ${viewW} ${viewH}`) // logical coords
+    .append("svg")                    //append the svg to the container
+      .attr("viewBox", `0 0 ${viewW} ${viewH}`) // defines logical coords
       .attr("width", displayW)                   // actual rendered size
-      .attr("height", displayH)                  // actual rendered size
-      .style("border", "1px solid #ccc");        // dev aid; remove in production
+      .attr("height", displayH)                  // actual rendered size  //define how it shows on the page
+      .style("border", "1px solid #ccc");        // add thw colour to the border
 
   // --- Scales (from T04-6) ---
-  // X: numeric (e.g., count) → pixels across viewW
-  const xMax = d3.max(data, d => d.count);
+  const xMax = d3.max(data, d => d.count); //converts counts (numbers) to bar widths.
   const xScale = d3.scaleLinear()
     .domain([0, xMax])
     .range([0, viewW]);
 
-  // Y: categorical (e.g., brand) → evenly spaced vertical bands across viewH
-  const yScale = d3.scaleBand()
+  const yScale = d3.scaleBand()  //converts brand names to vertical positions
     .domain(data.map(d => d.brand))   // change if your category column differs
     .range([0, viewH])
     .paddingInner(0.2)
     .paddingOuter(0.1);
 
-  // ---------------------------------------------------------------------------
-  // OLD rectangle-only drawing block from T04-6 (COMMENTED OUT for T04-7).
-  // We keep this block so you can refer back to the exact rectangle attributes.
-  // Drawing directly on svg works, but labels won’t move with bars.
-  // ---------------------------------------------------------------------------
-  /*
-  svg.selectAll("rect")
-    .data(data)
-    .join("rect")
-      .attr("class", d => `bar bar-${d.count}`)
-      .attr("x", 0)
-      .attr("y", d => yScale(d.brand))
-      .attr("width", d => xScale(d.count))
-      .attr("height", yScale.bandwidth())
-      .attr("fill", "steelblue");
-  */
-
-  // --- NEW in T04-7: group per row (bar + labels move together) ---
-  // Using x = 100 so labels align at 100 and bars start there too.
-  const labelX = 100;
+  //Groups per Row (bars + labels together)
+  const labelX = 100; // x position for all labels (to right of bar)
 
   const barAndLabel = svg
-    .selectAll("g")
-    .data(data)
+    .selectAll("g")  //group into g 
+    .data(data) //call the size
     .join("g")
-      .attr("transform", d => `translate(0, ${yScale(d.brand)})`);
+      .attr("transform", d => `translate(0, ${yScale(d.brand)})`);  //move each group to its y position
 
   // --- Bar rectangle inside the group ---
-  // y is 0 because the group sets vertical position via transform.
+  //Draw the Bar
   barAndLabel
     .append("rect")
       .attr("x", labelX)                     // bar starts at x = 100
@@ -65,6 +45,7 @@ const createBarChart = (data) => {
       .attr("fill", "steelblue");
 
   // --- Category text (left of bar, right-aligned at x=100) ---
+  //let the brand just at the side of the bar
   barAndLabel
     .append("text")
       .text(d => d.brand)                    // change if your category column differs
@@ -78,7 +59,7 @@ const createBarChart = (data) => {
   barAndLabel
     .append("text")
       .text(d => d.count)                    // numeric label
-      .attr("x", d => labelX + xScale(d.count) + 4) // just past bar end
+      .attr("x", d => labelX + xScale(d.count) + 4) // just past bar end adding 4 px for not stick with the bar
       .attr("y", 12)                         // adjust as needed
       .style("font-family", "sans-serif")
       .style("font-size", "13px");
